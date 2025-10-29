@@ -55,7 +55,7 @@ jobs:
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
-            python main/bot.py
+            python bot.py
           no_output_timeout: 15m
       - save_cache:
           paths:
