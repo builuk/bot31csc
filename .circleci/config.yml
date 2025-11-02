@@ -23,7 +23,7 @@ jobs:
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
-            pytest --maxfail=5 --disable-warnings
+            pytest tests/ --maxfail=5 --disable-warnings -v
       - save_cache:
           paths:
             - ~/.cache/pip
