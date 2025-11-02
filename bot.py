@@ -36,30 +36,33 @@ def send_message(chat, text):
 
 
 def main():
-    update_id = last_update(url)['update_id']
-    while True:
-        # pythonanywhere
-        time.sleep(3)
-        update = last_update(url)
-        if update_id == update['update_id']:
-            if get_message_text(update).lower() == 'hi' or get_message_text(
-                    update).lower() == 'hello' or get_message_text(update).lower() == 'hey':
-                send_message(get_chat_id(update), 'Greetings! Type "Dice" to roll the dice!')
-            elif get_message_text(update).lower() == 'qa24':
-                send_message(get_chat_id(update), 'Python')
-            elif get_message_text(update).lower() == 'gin':
-                send_message(get_chat_id(update), 'Finish')
-                break
-            elif get_message_text(update).lower() == 'python':
-                send_message(get_chat_id(update), 'version 3.10')
-            elif get_message_text(update).lower() == 'dice':
-                _1 = random.randint(1, 6)
-                _2 = random.randint(1, 6)
-                send_message(get_chat_id(update),
-                             'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(_1 + _2) + '!')
-            else:
-                send_message(get_chat_id(update), 'Sorry, I don\'t understand you :(')
-            update_id += 1
+    try:
+        update_id = last_update(url)['update_id']
+        while True:
+            # pythonanywhere
+            time.sleep(3)
+            update = last_update(url)
+            if update_id == update['update_id']:
+                if get_message_text(update).lower() == 'hi' or get_message_text(
+                        update).lower() == 'hello' or get_message_text(update).lower() == 'hey':
+                    send_message(get_chat_id(update), 'Greetings! Type "Dice" to roll the dice!')
+                elif get_message_text(update).lower() == 'qa24':
+                    send_message(get_chat_id(update), 'Python')
+                elif get_message_text(update).lower() == 'gin':
+                    send_message(get_chat_id(update), 'Finish')
+                    break
+                elif get_message_text(update).lower() == 'python':
+                    send_message(get_chat_id(update), 'version 3.10')
+                elif get_message_text(update).lower() == 'dice':
+                    _1 = random.randint(1, 6)
+                    _2 = random.randint(1, 6)
+                    send_message(get_chat_id(update),
+                                 'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(_1 + _2) + '!')
+                else:
+                    send_message(get_chat_id(update), 'Sorry, I don\'t understand you :(')
+                update_id += 1
+    except KeyboardInterrupt:
+        print('\nБот зупинено')
 
 
 # print(__name__)
