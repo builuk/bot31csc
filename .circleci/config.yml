@@ -8,7 +8,6 @@ executors:
 jobs:
   run_unit_tests:
     executor: python-executor
-    timeout: 5m
     steps:
       - checkout
       - restore_cache:
@@ -19,6 +18,7 @@ jobs:
           command: echo 'export PYTHONPATH=$PYTHONPATH:/home/circleci/project' >> $BASH_ENV
       - run:
           name: Install Dependencies and Run Unit Tests
+          no_output_timeout: 5m
           command: |
             python -m venv venv
             . venv/bin/activate
@@ -33,7 +33,6 @@ jobs:
 
   create_env_and_run_bot:
     executor: python-executor
-    timeout: 5m
     steps:
       - checkout
       - restore_cache:
@@ -52,13 +51,13 @@ jobs:
           when: always
       - run:
           name: Setup Environment and Run Bot
+          no_output_timeout: 5m
           command: |
             python -m venv venv
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
             python bot.py
-          no_output_timeout: 15m
       - save_cache:
           paths:
             - ~/.cache/pip
@@ -67,7 +66,6 @@ jobs:
 
   create_env_and_run_bot_with_db:
     executor: python-executor
-    timeout: 5m
     steps:
       - checkout
       - restore_cache:
@@ -86,13 +84,13 @@ jobs:
           when: always
       - run:
           name: Setup Environment and Run Bot with DB
+          no_output_timeout: 5m
           command: |
             python -m venv venv
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
             python main/bot_with_db.py
-          no_output_timeout: 15m
       - save_cache:
           paths:
             - ~/.cache/pip
@@ -102,7 +100,6 @@ jobs:
   deploy:
     machine:
       enabled: true
-    timeout: 5m
     steps:
       - checkout
       - add_ssh_keys:
@@ -110,10 +107,12 @@ jobs:
             - "dd:fd:8d:9f:9f:d0:c8:d4:7b:5b:2e:58:d9:dc:22:b8:ff:63:66:76"
       - run:
           name: Upload Deployment Script
+          no_output_timeout: 5m
           command: |
             scp -o StrictHostKeyChecking=no ./deploy_script.sh ubuntu@172.31.93.105:/deploy_script.sh
       - run:
           name: Deploy to Production
+          no_output_timeout: 5m
           command: |
             ssh -o StrictHostKeyChecking=no ubuntu@172.31.93.105 'bash /deploy_script.sh'
 

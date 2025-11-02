@@ -10,9 +10,10 @@ url = f"https://api.telegram.org/bot{bot_key}/"  # don't forget to change the to
 
 def last_update(request):
     response = requests.get(request + 'getUpdates')
-    print(response)
+    # TODO: Uncomment just for local testing
+    # print(response)
     response = response.json()
-    print(response)
+    # print(response)
     results = response['result']
     total_updates = len(results) - 1
     return results[total_updates]
