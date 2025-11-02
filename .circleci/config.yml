@@ -132,14 +132,14 @@ workflows:
           type: approval
           requires:
             - run_unit_tests
-      - create_env_and_run_bot_with_db:
-          requires:
-            - approve_bot_db_test
-      - hold_for_approval:
-          type: approval
-          requires:
-            - create_env_and_run_bot
-      #            - create_env_and_run_bot_with_db
-      - deploy:
-          requires:
-            - hold_for_approval
+      # - create_env_and_run_bot_with_db:
+      #     requires:
+      #       - approve_bot_db_test
+      # - hold_for_approval:
+      #     type: approval
+      #     requires:
+      #       - create_env_and_run_bot
+      # #            - create_env_and_run_bot_with_db
+      # - deploy:
+      #     requires:
+      #       - hold_for_approval
