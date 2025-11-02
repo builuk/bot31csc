@@ -128,10 +128,10 @@ workflows:
       - create_env_and_run_bot:
           requires:
             - approve_bot_test
-      - approve_bot_db_test:
-          type: approval
-          requires:
-            - run_unit_tests
+      # - approve_bot_db_test:
+      #     type: approval
+      #     requires:
+      #       - run_unit_tests
       # - create_env_and_run_bot_with_db:
       #     requires:
       #       - approve_bot_db_test
