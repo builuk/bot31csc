@@ -47,6 +47,9 @@ def main():
                 send_message(get_chat_id(update), 'Greetings! Type "Dice" to roll the dice!')
             elif get_message_text(update).lower() == 'qa24':
                 send_message(get_chat_id(update), 'Python')
+            elif get_message_text(update).lower() == 'gin':
+                send_message(get_chat_id(update), 'Finish')
+                break
             elif get_message_text(update).lower() == 'python':
                 send_message(get_chat_id(update), 'version 3.10')
             elif get_message_text(update).lower() == 'dice':
