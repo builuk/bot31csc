@@ -46,7 +46,7 @@ def main():
                 if get_message_text(update).lower() == 'hi' or get_message_text(
                         update).lower() == 'hello' or get_message_text(update).lower() == 'hey':
                     send_message(get_chat_id(update), 'Greetings! Type "Dice" to roll the dice!')
-                elif get_message_text(update).lower() == 'qa24':
+                elif get_message_text(update).lower() == 'csc31':
                     send_message(get_chat_id(update), 'Python')
                 elif get_message_text(update).lower() == 'gin':
                     send_message(get_chat_id(update), 'Finish')
