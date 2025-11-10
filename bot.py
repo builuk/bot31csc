@@ -2,8 +2,9 @@ import time
 
 import requests
 import random
+from calculator import calculate_expression
 
-bot_key = '8204532312:AAHh1EVv-LuOK6AeGUoFT7xFyHY0aRfFZ0s'
+bot_key = '8204532312:AAFgoMuuTGbGbwuIZzZJZ654h4QWMaNL7E8'
 
 url = f"https://api.telegram.org/bot{bot_key}/"  # don't forget to change the token!
 
@@ -59,7 +60,12 @@ def main():
                     send_message(get_chat_id(update),
                                  'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(_1 + _2) + '!')
                 else:
-                    send_message(get_chat_id(update), 'Sorry, I don\'t understand you :(')
+                    result = calculate_expression(get_message_text(update))
+                    if result is not None:
+                        send_message(get_chat_id(update), result)
+                    else:
+                        send_message(get_chat_id(update), 'Sorry, I don\'t understand you :(')
+
                 update_id += 1
     except KeyboardInterrupt:
         print('\nБот зупинено')
