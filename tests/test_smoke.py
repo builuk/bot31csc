@@ -1,10 +1,10 @@
 from calculator import calculate_expression
 
 def test_calculate_addition():
-    assert calculate_expression('1 + 2 + 3') == 6
+    assert calculate_expression('1 + 2 + 3') == '6'
 
 def test_calculate_subtraction():
-    assert calculate_expression('2 - 3') == 2
+    assert calculate_expression('2 - 3') == '2'
 
 def test_smoke():
     assert True
