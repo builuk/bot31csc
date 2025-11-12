@@ -82,6 +82,7 @@ jobs:
           command: |
             echo "TOKEN=${TOKEN}" > .env
             echo "ADMIN_ID=${ADMIN_ID}" >> .env
+            echo "URL=${URL}" >> .env
             echo ".env file content:"
             cat .env
           when: always
