@@ -5,6 +5,8 @@ executors:
     docker:
       - image: cimg/python:3.14
     resource_class: small
+    environment:
+      TIME_LIMIT: 10m
 
 jobs:
   run_unit_tests:
