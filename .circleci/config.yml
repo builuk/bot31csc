@@ -27,7 +27,31 @@ jobs:
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
-            pytest tests/ --maxfail=5 --disable-warnings -v
+            pytest tests/tests_unit/ --maxfail=5 --disable-warnings -v
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+            - venv
+          key: v2-dependencies-{{ checksum "requirements.txt" }}
+  run_api_tests:
+    executor: python-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Set PYTHONPATH
+          command: echo 'export PYTHONPATH=$PYTHONPATH:/home/circleci/project' >> $BASH_ENV
+      - run:
+          name: Install Dependencies and Run Unit Tests
+          no_output_timeout: 5m
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            pytest tests/tests_api/ --maxfail=5 --disable-warnings -v
       - save_cache:
           paths:
             - ~/.cache/pip
@@ -106,6 +130,7 @@ workflows:
   build_and_test:
     jobs:
       - run_unit_tests
+      - run_api_tests
       - approve_bot_test:
           type: approval
           requires:
