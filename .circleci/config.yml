@@ -140,4 +140,3 @@ workflows:
       - create_env_and_run_bot:
           requires:
             - approve_bot_test
-
