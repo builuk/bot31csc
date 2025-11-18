@@ -2,6 +2,7 @@ import time
 import requests
 import random
 from calculator import calculate_expression
+from weather import get_weather
 import os
 from dotenv import load_dotenv
 
@@ -57,6 +58,10 @@ def main():
                     break
                 elif get_message_text(update).lower() == 'python':
                     send_message(get_chat_id(update), 'version 3.10')
+                elif 'weather' in get_message_text(update).lower():
+                    city = get_message_text(update).lower().replace('weather ', '').strip()
+                    weather = get_weather(city)
+                    send_message(get_chat_id(update), weather)
                 elif get_message_text(update).lower() == 'dice':
                     _1 = random.randint(1, 6)
                     _2 = random.randint(1, 6)
