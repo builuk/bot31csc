@@ -18,7 +18,7 @@ def last_update(request):
     # TODO: Uncomment just for local testing
     # print(response)
     response = response.json()
-    # print(response)
+    print(response)
     results = response['result']
     total_updates = len(results) - 1
     return results[total_updates]
@@ -45,7 +45,7 @@ def main():
         update_id = last_update(url)['update_id']
         while True:
             # pythonanywhere
-            time.sleep(3)
+            time.sleep(1)
             update = last_update(url)
             if update_id == update['update_id']:
                 if get_message_text(update).lower() == 'hi' or get_message_text(
