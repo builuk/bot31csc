@@ -2,6 +2,7 @@ import time
 import requests
 import random
 from calculator import calculate_expression
+from weather import get_weather
 import os
 from dotenv import load_dotenv
 
@@ -17,7 +18,7 @@ def last_update(request):
     # TODO: Uncomment just for local testing
     # print(response)
     response = response.json()
-    # print(response)
+    print(response)
     results = response['result']
     total_updates = len(results) - 1
     return results[total_updates]
@@ -44,7 +45,7 @@ def main():
         update_id = last_update(url)['update_id']
         while True:
             # pythonanywhere
-            time.sleep(3)
+            time.sleep(1)
             update = last_update(url)
             if update_id == update['update_id']:
                 if get_message_text(update).lower() == 'hi' or get_message_text(
@@ -57,6 +58,11 @@ def main():
                     break
                 elif get_message_text(update).lower() == 'python':
                     send_message(get_chat_id(update), 'version 3.10')
+                # from weather import get_weather
+                elif 'weather' in get_message_text(update).lower():
+                    city = get_message_text(update).lower().replace('weather ', '')
+                    weather = get_weather(city)
+                    send_message(get_chat_id(update), weather)
                 elif get_message_text(update).lower() == 'dice':
                     _1 = random.randint(1, 6)
                     _2 = random.randint(1, 6)
