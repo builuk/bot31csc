@@ -1,8 +1,8 @@
 import time
 import requests
 import random
-from calculator import calculate_expression
-from weather import get_weather
+from commands.calculator import calculate_expression
+from commands.weather import get_weather
 import os
 from dotenv import load_dotenv
 
