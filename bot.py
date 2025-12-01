@@ -47,6 +47,11 @@ class Bot:
         response = requests.post(url + 'sendMessage', data=params)
         return response
 
+    def _handle_csc31(self, update):
+        chat_id = self._get_chat_id(update)
+        message_text = 'Python'
+        return self._send_message(chat_id, message_text)
+
     def run(self):
         try:
             update_id = self._last_update(url)['update_id']
@@ -59,7 +64,7 @@ class Bot:
                             self.update).lower() == 'hello' or self._get_message_text(self.update).lower() == 'hey':
                         self._send_message(self._get_chat_id(self.update), 'Greetings! Type "Dice" to roll the dice!')
                     elif self._get_message_text(self.update).lower() == 'csc31':
-                        self._send_message(self._get_chat_id(self.update), 'Python')
+                        self._handle_csc31(self.update)
                     elif self._get_message_text(self.update).lower() == 'gin':
                         self._send_message(self._get_chat_id(self.update), 'Finish')
                         break
@@ -86,7 +91,6 @@ class Bot:
                     update_id += 1
         except KeyboardInterrupt:
             print('\nБот зупинено')
-
 
 
 if __name__ == '__main__':
