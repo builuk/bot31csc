@@ -12,40 +12,32 @@ bot_key = os.getenv("TOKEN")
 URL = os.getenv("URL")
 url = f"{URL}{bot_key}/"
 
-class Bot:
-    COMMANDS = {'hi','hello','hey',
-                'csc31',
-                'gin',
-                'python',
-                'dice',
-                'weather'}
 
-    def __init__(self, token, url):
-        self.token = token
-        self.url = url
+def last_update(request):
+    response = requests.get(request + 'getUpdates')
+    # TODO: Uncomment just for local testing
+    # print(response)
+    response = response.json()
+    print(response)
+    results = response['result']
+    total_updates = len(results) - 1
+    return results[total_updates]
 
-    def _last_update(self, request):
-        response = requests.get(request + 'getUpdates')
-        # TODO: Uncomment just for local testing, clean up before release
-        # print(response)
-        response = response.json()
-        print(response)
-        results = response['result']
-        total_updates = len(results) - 1
-        return results[total_updates]
 
-    def _get_chat_id(self, update):
-        chat_id = update['message']['chat']['id']
-        return chat_id
+def get_chat_id(update):
+    chat_id = update['message']['chat']['id']
+    return chat_id
 
-    def _get_message_text(self, update):
-        message_text = update['message']['text']
-        return message_text
 
-    def _send_message(self, chat, text):
-        params = {'chat_id': chat, 'text': text}
-        response = requests.post(url + 'sendMessage', data=params)
-        return response
+def get_message_text(update):
+    message_text = update['message']['text']
+    return message_text
+
+
+def send_message(chat, text):
+    params = {'chat_id': chat, 'text': text}
+    response = requests.post(url + 'sendMessage', data=params)
+    return response
 
 
 def main():
