@@ -47,46 +47,48 @@ class Bot:
         response = requests.post(url + 'sendMessage', data=params)
         return response
 
-
-def main():
-    try:
-        update_id = last_update(url)['update_id']
-        while True:
-            # pythonanywhere
-            time.sleep(1)
-            update = last_update(url)
-            if update_id == update['update_id']:
-                if get_message_text(update).lower() == 'hi' or get_message_text(
-                        update).lower() == 'hello' or get_message_text(update).lower() == 'hey':
-                    send_message(get_chat_id(update), 'Greetings! Type "Dice" to roll the dice!')
-                elif get_message_text(update).lower() == 'csc31':
-                    send_message(get_chat_id(update), 'Python')
-                elif get_message_text(update).lower() == 'gin':
-                    send_message(get_chat_id(update), 'Finish')
-                    break
-                elif get_message_text(update).lower() == 'python':
-                    send_message(get_chat_id(update), 'version 3.10')
-                # from weather import get_weather
-                elif 'weather' in get_message_text(update).lower():
-                    city = get_message_text(update).lower().replace('weather ', '')
-                    weather = get_weather(city)
-                    send_message(get_chat_id(update), weather)
-                elif get_message_text(update).lower() == 'dice':
-                    _1 = random.randint(1, 6)
-                    _2 = random.randint(1, 6)
-                    send_message(get_chat_id(update),
-                                 'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(_1 + _2) + '!')
-                else:
-                    result = calculate_expression(get_message_text(update))
-                    if result is not None:
-                        send_message(get_chat_id(update), result)
+    def run(self):
+        try:
+            update_id = self._last_update(url)['update_id']
+            while True:
+                # pythonanywhere
+                time.sleep(1)
+                self.update = self._last_update(url)
+                if update_id == self.update['update_id']:
+                    if self._get_message_text(self.update).lower() == 'hi' or self._get_message_text(
+                            self.update).lower() == 'hello' or self._get_message_text(self.update).lower() == 'hey':
+                        self._send_message(self._get_chat_id(self.update), 'Greetings! Type "Dice" to roll the dice!')
+                    elif self._get_message_text(self.update).lower() == 'csc31':
+                        self._send_message(self._get_chat_id(self.update), 'Python')
+                    elif self._get_message_text(self.update).lower() == 'gin':
+                        self._send_message(self._get_chat_id(self.update), 'Finish')
+                        break
+                    elif self._get_message_text(self.update).lower() == 'python':
+                        self._send_message(self._get_chat_id(self.update), 'version 3.10')
+                    # from weather import get_weather
+                    elif 'weather' in self._get_message_text(self.update).lower():
+                        city = self._get_message_text(self.update).lower().replace('weather ', '')
+                        weather = get_weather(city)
+                        self._send_message(self._get_chat_id(self.update), weather)
+                    elif self._get_message_text(self.update).lower() == 'dice':
+                        _1 = random.randint(1, 6)
+                        _2 = random.randint(1, 6)
+                        self._send_message(self._get_chat_id(self.update),
+                                     'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(
+                                         _1 + _2) + '!')
                     else:
-                        send_message(get_chat_id(update), 'Sorry, I don\'t understand you :(')
+                        result = calculate_expression(self._get_message_text(self.update))
+                        if result is not None:
+                            self._send_message(self._get_chat_id(self.update), result)
+                        else:
+                            self._send_message(self._get_chat_id(self.update), 'Sorry, I don\'t understand you :(')
 
-                update_id += 1
-    except KeyboardInterrupt:
-        print('\nБот зупинено')
+                    update_id += 1
+        except KeyboardInterrupt:
+            print('\nБот зупинено')
+
 
 
 if __name__ == '__main__':
-    main()
+    bot = Bot(bot_key, url)
+    bot.run()
