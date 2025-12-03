@@ -31,6 +31,8 @@ class Bot:
         response = response.json()
         print(response)
         results = response['result']
+        if not response['result']:
+            return None
         total_updates = len(results) - 1
         return results[total_updates]
 
@@ -53,44 +55,52 @@ class Bot:
         return self._send_message(chat_id, message_text)
 
     def run(self):
-        try:
-            update_id = self._last_update(url)['update_id']
-            while True:
-                # pythonanywhere
-                time.sleep(1)
-                self.update = self._last_update(url)
-                if update_id == self.update['update_id']:
-                    if self._get_message_text(self.update).lower() == 'hi' or self._get_message_text(
-                            self.update).lower() == 'hello' or self._get_message_text(self.update).lower() == 'hey':
-                        self._send_message(self._get_chat_id(self.update), 'Greetings! Type "Dice" to roll the dice!')
-                    elif self._get_message_text(self.update).lower() == 'csc31':
-                        self._handle_csc31(self.update)
-                    elif self._get_message_text(self.update).lower() == 'gin':
-                        self._send_message(self._get_chat_id(self.update), 'Finish')
-                        break
-                    elif self._get_message_text(self.update).lower() == 'python':
-                        self._send_message(self._get_chat_id(self.update), 'version 3.10')
-                    # from weather import get_weather
-                    elif 'weather' in self._get_message_text(self.update).lower():
-                        city = self._get_message_text(self.update).lower().replace('weather ', '')
-                        weather = get_weather(city)
-                        self._send_message(self._get_chat_id(self.update), weather)
-                    elif self._get_message_text(self.update).lower() == 'dice':
-                        _1 = random.randint(1, 6)
-                        _2 = random.randint(1, 6)
-                        self._send_message(self._get_chat_id(self.update),
-                                     'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(
-                                         _1 + _2) + '!')
-                    else:
-                        result = calculate_expression(self._get_message_text(self.update))
-                        if result is not None:
-                            self._send_message(self._get_chat_id(self.update), result)
+        bot_work = True
+        while bot_work:
+            last_update = self._last_update(self.url)
+            if last_update is None:
+                print('Type something.')
+                time.sleep(3)
+                continue
+            update_id = last_update['update_id']
+            try:
+                while True:
+                    # pythonanywhere
+                    time.sleep(1)
+                    self.update = self._last_update(url)
+                    if update_id == self.update['update_id']:
+                        if self._get_message_text(self.update).lower() == 'hi' or self._get_message_text(
+                                self.update).lower() == 'hello' or self._get_message_text(self.update).lower() == 'hey':
+                            self._send_message(self._get_chat_id(self.update), 'Greetings! Type "Dice" to roll the dice!')
+                        elif self._get_message_text(self.update).lower() == 'csc31':
+                            self._handle_csc31(self.update)
+                        elif self._get_message_text(self.update).lower() == 'gin':
+                            self._send_message(self._get_chat_id(self.update), 'Finish')
+                            bot_work = False
+                            break
+                        elif self._get_message_text(self.update).lower() == 'python':
+                            self._send_message(self._get_chat_id(self.update), 'version 3.10')
+                        # from weather import get_weather
+                        elif 'weather' in self._get_message_text(self.update).lower():
+                            city = self._get_message_text(self.update).lower().replace('weather ', '')
+                            weather = get_weather(city)
+                            self._send_message(self._get_chat_id(self.update), weather)
+                        elif self._get_message_text(self.update).lower() == 'dice':
+                            _1 = random.randint(1, 6)
+                            _2 = random.randint(1, 6)
+                            self._send_message(self._get_chat_id(self.update),
+                                         'You have ' + str(_1) + ' and ' + str(_2) + '!\nYour result is ' + str(
+                                             _1 + _2) + '!')
                         else:
-                            self._send_message(self._get_chat_id(self.update), 'Sorry, I don\'t understand you :(')
+                            result = calculate_expression(self._get_message_text(self.update))
+                            if result is not None:
+                                self._send_message(self._get_chat_id(self.update), result)
+                            else:
+                                self._send_message(self._get_chat_id(self.update), 'Sorry, I don\'t understand you :(')
 
-                    update_id += 1
-        except KeyboardInterrupt:
-            print('\nБот зупинено')
+                        update_id += 1
+            except KeyboardInterrupt:
+                print('\nБот зупинено')
 
 
 if __name__ == '__main__':
