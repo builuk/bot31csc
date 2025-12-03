@@ -64,7 +64,7 @@ class Bot:
                 continue
             update_id = last_update['update_id']
             try:
-                while True:
+                while bot_work:
                     # pythonanywhere
                     time.sleep(1)
                     self.update = self._last_update(url)
@@ -77,7 +77,6 @@ class Bot:
                         elif self._get_message_text(self.update).lower() == 'gin':
                             self._send_message(self._get_chat_id(self.update), 'Finish')
                             bot_work = False
-                            break
                         elif self._get_message_text(self.update).lower() == 'python':
                             self._send_message(self._get_chat_id(self.update), 'version 3.10')
                         # from weather import get_weather
