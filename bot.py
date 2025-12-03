@@ -65,7 +65,6 @@ class Bot:
             update_id = last_update['update_id']
             try:
                 while bot_work:
-                    # pythonanywhere
                     time.sleep(1)
                     self.update = self._last_update(url)
                     if update_id == self.update['update_id']:
