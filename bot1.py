@@ -12,17 +12,8 @@ bot_key = os.getenv("TOKEN")
 URL = os.getenv("URL")
 url = f"{URL}{bot_key}/"
 
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
-
-class Bot(metaclass=Singleton):
+class Bot:
+    __elem = None
     COMMANDS = {'hi','hello','hey',
                 'csc31',
                 'gin',
@@ -30,12 +21,18 @@ class Bot(metaclass=Singleton):
                 'dice',
                 'weather'}
 
+    @staticmethod
+    def single_init(token, url):
+        if Bot.__elem is None:
+            element = Bot(token, url)
+            Bot.__elem = element
+            return element
+        else:
+            return Bot.__elem
+
     def __init__(self, token, url):
         self.token = token
         self.url = url
-
-    # def __str__(self):
-    #     return 'Hello CSC31'
 
     def _last_update(self, request):
         response = requests.get(request + 'getUpdates')
@@ -115,9 +112,9 @@ class Bot(metaclass=Singleton):
 
 
 if __name__ == '__main__':
-    bot = Bot(bot_key, url)
-    bot1 = Bot(bot_key, url)
-    bot2 = Bot(bot_key, url)
+    bot = Bot.single_init(bot_key, url)
+    bot1 = Bot.single_init(bot_key, url)
+    bot2 = Bot.single_init(bot_key, url)
     print(bot)
     print(bot1)
     print(bot2)
